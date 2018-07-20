@@ -1,4 +1,9 @@
 package-as: CrossGambling
 
+ignore:
+  - README.md
+  - .gitignore
+  - .github
+  
 move-folders:
   CrossGambling/CrossGambling: CrossGambling
