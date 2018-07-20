@@ -1,0 +1,4 @@
+package-as: CrossGambling
+
+move-folders:
+  CrossGambling/CrossGambling: CrossGambling
