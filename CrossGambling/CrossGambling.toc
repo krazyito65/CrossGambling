@@ -1,10 +1,11 @@
-## Interface: 70300
+## Interface: 80000
 ## Title:|cffff7d0aCrossGambling
 ## Author: Fluttershy
-## Version: 7.3
+## 8.0 Maintainer: Krazyito@ Mal'ganis
+## Version: 8.0.1
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## Notes: A fun way to lose gold. Or win it.
-## URL: http://wow.curseforge.com/addons/cross-gambling/
+## URL: https://github.com/krazyito65/CrossGambling/
 ## SavedVariables: CrossGambling
 CrossGambling.xml
