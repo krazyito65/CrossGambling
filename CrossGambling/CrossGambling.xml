@@ -29,7 +29,7 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString name="version" inherits="GameFontNormal" text="|cffff3f3f(7.3.0 version)">
+				<FontString name="version" inherits="GameFontNormal" text="|cffff3f3f(8.0.1 version)">
 					<Size x="299" y="18" />
 					<Anchors>
 						<Anchor point="TOPLEFT">
@@ -37,7 +37,7 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString inherits="GameFontNormal" text="Krazyito@Stormrage">
+				<FontString inherits="GameFontNormal" text="">
 					<Size x="122" y="13" />
 					<Anchors>
 						<Anchor point="TOPLEFT">
@@ -49,7 +49,7 @@
 				</FontString>
 			</Layer>
 		</Layers>
-		
+
 		<Frames>
 			<Button name="CrossGambling_Close" inherits="UIPanelCloseButton">
 				<Anchors>
@@ -202,7 +202,7 @@
 				<OnLoad>CrossGambling_Roll_Button.tooltipText="Does /roll for you!"</OnLoad>
 				</Scripts>
 			</Button>
-			
+
 			<Button name="CrossGambling_Ban_Button" inherits="OptionsButtonTemplate" text="Ban List">
 				<Anchors>
 					<Anchor point="BOTTOM">
@@ -215,10 +215,10 @@
 
 					</OnClick>
 				<OnLoad>CrossGambling_Ban_Button.tooltipText="Ban list, to add people here type /cg ban (name)"</OnLoad>
-				
+
 				</Scripts>
 			</Button>
-			
+
 			<Button name="CrossGambling_Type_Button" inherits="OptionsButtonTemplate" text="Enter's For You">
 				<Anchors>
 					<Anchor point="BOTTOM">
@@ -240,17 +240,17 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
-				
+
 					<OnClick>
 						CrossGambling_OnClickCHAT();
 					</OnClick>
 				<OnLoad>CrossGambling_CHAT_Button.tooltipText="Change Channels"</OnLoad>
 				</Scripts>
 			</Button>
-			
-			
-				
-			
+
+
+
+
 			<Button name="CG_MinimapButton" parent="Minimap" enableMouse="true" movable="true" hidden="false">
 		<Size>
 			<AbsDimension x="33" y="33"/>
@@ -307,7 +307,7 @@
 				self:UnlockHighlight()
 				CG_MinimapButton_DraggingFrame:Hide()
 			</OnDragStop>
-			
+
 			<OnMouseDown>
 							if button == "RightButton" and not self.isMoving then
 							self:StartMoving();
@@ -326,8 +326,8 @@
 						 self.isMoving = false;
 						 end
 				</OnHide>
-			
-			
+
+
 			<OnClick>
 								ToggleFrame(CrossGambling_Frame)
 			</OnClick>
@@ -335,7 +335,7 @@
 	</Button>
 		</Frames>
 		<Scripts>
-				
+
 			<OnLoad>
 				CrossGambling_OnLoad(self);
 			</OnLoad>
@@ -352,5 +352,5 @@
 			</OnDragStop>
 		</Scripts>
 	</Frame>
-	
+
 </Ui>
