@@ -276,7 +276,7 @@ function CrossGambling_OnEvent(self, event, ...)
 
 	if (event == "CHAT_MSG_SYSTEM" and AcceptRolls=="true") then
 		local msg = ... -- name without the relam
-		CrossGambling_ParseRoll(tostring(temp1));
+		CrossGambling_ParseRoll(tostring(msg));
 	end
 end
 
