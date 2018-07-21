@@ -1,7 +1,7 @@
 ## Interface: 80000
 ## Title:|cffff7d0aCrossGambling
 ## Author: Fluttershy
-## 8.0 Maintainer: Krazyito@ Mal'ganis
+## 8.0 Maintainer: Krazyito @ Stormrage
 ## Version: 8.0.1
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
