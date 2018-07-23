@@ -223,7 +223,7 @@ function CrossGambling_OnEvent(self, event, ...)
 				["hightie"] = { },
 				["bans"] = { }
 			}
-		elseif tostring(type(CrossGambling["chat"])) ~= number then
+		elseif tostring(type(CrossGambling["chat"])) ~= "number" then
 			-- fix older legacy items for new chat channels.
 			CrossGambling["chat"] = 1
 		end
