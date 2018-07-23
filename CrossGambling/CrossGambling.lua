@@ -223,6 +223,9 @@ function CrossGambling_OnEvent(self, event, ...)
 				["hightie"] = { },
 				["bans"] = { }
 			}
+		elseif tostring(type(CrossGambling["chat"])) ~= number then
+			-- fix older legacy items for new chat channels.
+			CrossGambling["chat"] = 1
 		end
 		if(not CrossGambling["lastroll"]) then CrossGambling["lastroll"] = 100; end
 		if(not CrossGambling["stats"]) then CrossGambling["stats"] = { }; end
