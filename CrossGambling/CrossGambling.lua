@@ -33,6 +33,7 @@ function CrossGambling_OnLoad(self)
 	DEFAULT_CHAT_FRAME:AddMessage("|cffffff00<CrossFire Gambling for Warcraft 8.0.1> loaded /cg to use");
 
 	self:RegisterEvent("CHAT_MSG_RAID");
+	self:RegisterEvent("CHAT_MSG_CHANNEL");
 	self:RegisterEvent("CHAT_MSG_RAID_LEADER");
 	self:RegisterEvent("CHAT_MSG_GUILD");
 	self:RegisterEvent("CHAT_MSG_SYSTEM");
@@ -88,7 +89,7 @@ function CrossGambling_SlashCmd(msg)
 	if (msg == "" or msg == nil) then
 	    Print("", "", "~Following commands for CrossGambling~");
 		Print("", "", "show - Shows the frame");
-		Print("", "", "hide - Hides the frame");;
+		Print("", "", "hide - Hides the frame");
 		Print("", "", "channel - Change the custom channel for gambling");
 		Print("", "", "reset - Resets the AddOn");
 		Print("", "", "fullstats - list full stats");
@@ -223,6 +224,9 @@ function CrossGambling_OnEvent(self, event, ...)
 				["hightie"] = { },
 				["bans"] = { }
 			}
+		elseif tostring(type(CrossGambling["chat"])) ~= "number" then
+			-- fix older legacy items for new chat channels.
+			CrossGambling["chat"] = 1
 		end
 		if(not CrossGambling["lastroll"]) then CrossGambling["lastroll"] = 100; end
 		if(not CrossGambling["stats"]) then CrossGambling["stats"] = { }; end
@@ -257,23 +261,25 @@ function CrossGambling_OnEvent(self, event, ...)
 
 	-- IF IT'S A RAID MESSAGE... --
 	if ((event == "CHAT_MSG_RAID_LEADER" or event == "CHAT_MSG_RAID") and AcceptOnes=="true" and CrossGambling["chat"] == 1) then
-		CrossGambling_ParseChatMsg(arg1, arg2)
+		local msg, _,_,_,name = ... -- name no realm
+		CrossGambling_ParseChatMsg(msg, name)
 	end
 
 	if ((event == "CHAT_MSG_GUILD_LEADER" or event == "CHAT_MSG_GUILD")and AcceptOnes=="true" and CrossGambling["chat"] == 2) then
-		CrossGambling_ParseChatMsg(arg1, arg2)
+		local msg, name = ... -- name no realm
+		CrossGambling_ParseChatMsg(msg, name)
 	end
 
 	if event == "CHAT_MSG_CHANNEL" and AcceptOnes=="true" and CrossGambling["chat"] == 3 then
-		arg8, arg9 = select(8, ...)
-		if arg9 == CrossGambling["channel"] then
-			CrossGambling_ParseChatMsg(arg1, arg2)
+		local msg,_,_,_,name,_,_,_,channelName = ...
+		if channelName == CrossGambling["channel"] then
+			CrossGambling_ParseChatMsg(msg, name)
 		end
 	end
 
 	if (event == "CHAT_MSG_SYSTEM" and AcceptRolls=="true") then
-		local temp1 = tostring(arg1);
-		CrossGambling_ParseRoll(temp1);
+		local msg = ...
+		CrossGambling_ParseRoll(tostring(msg));
 	end
 end
 
