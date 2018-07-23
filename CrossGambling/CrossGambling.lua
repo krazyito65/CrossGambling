@@ -34,6 +34,7 @@ function CrossGambling_OnLoad(self)
 
 	self:RegisterEvent("CHAT_MSG_RAID");
 	self:RegisterEvent("CHAT_MSG_CHANNEL");
+	self:RegisterEvent("CHAT_MSG_RAID_LEADER");
 	self:RegisterEvent("CHAT_MSG_GUILD");
 	self:RegisterEvent("CHAT_MSG_SYSTEM");
 	self:RegisterEvent("PLAYER_ENTERING_WORLD");
