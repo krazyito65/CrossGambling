@@ -234,8 +234,8 @@ function CrossGambling_OnEvent(self, event, ...)
 		elseif tostring(type(CrossGambling["chat"])) ~= "number" then
 			CrossGambling["chat"] = 1
 		elseif CrossGambling["minimap"] == nil then
-			-- if its not there, set it to false.  This determines if its hidden
-			CrossGambling["minimap"] = false
+			-- If the value is not true/false then set it to true to show initially.
+			CrossGambling["minimap"] = true
 		end
 		if(not CrossGambling["lastroll"]) then CrossGambling["lastroll"] = 100; end
 		if(not CrossGambling["stats"]) then CrossGambling["stats"] = { }; end
