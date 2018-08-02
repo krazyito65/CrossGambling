@@ -95,6 +95,7 @@ function CrossGambling_SlashCmd(msg)
 		Print("", "", "fullstats - list full stats");
 		Print("", "", "resetstats - Resets the stats");
 		Print("", "", "joinstats [main] [alt] - Apply [alt]'s win/losses to [main]");
+		Print("", "", "minimap - Toggle minimap show/hide");
 		Print("", "", "unjoinstats [alt] - Unjoin [alt]'s win/losses from whomever it was joined to");
 		Print("", "", "ban - Ban's the user from being able to roll");
 		Print("", "", "unban - Unban's the user");
@@ -118,10 +119,15 @@ function CrossGambling_SlashCmd(msg)
 	end
 	if (msg == "fullstats") then
 		CrossGambling_OnClickSTATS(true)
+		msgPrint = 1;
 	end
 	if (msg == "resetstats") then
 		Print("", "", "|cffffff00GCG stats have now been reset");
 		CrossGambling_ResetStats();
+		msgPrint = 1;
+	end
+	if (msg == "minimap") then
+		Minimap_Toggle()
 		msgPrint = 1;
 	end
 	if (string.sub(msg, 1, 7) == "channel") then
@@ -224,9 +230,12 @@ function CrossGambling_OnEvent(self, event, ...)
 				["hightie"] = { },
 				["bans"] = { }
 			}
+		-- fix older legacy items for new chat channels.  Probably need to iterate through each to see if it should be set.
 		elseif tostring(type(CrossGambling["chat"])) ~= "number" then
-			-- fix older legacy items for new chat channels.
 			CrossGambling["chat"] = 1
+		elseif CrossGambling["minimap"] == nil then
+			-- if its not there, set it to false.  This determines if its hidden
+			CrossGambling["minimap"] = false
 		end
 		if(not CrossGambling["lastroll"]) then CrossGambling["lastroll"] = 100; end
 		if(not CrossGambling["stats"]) then CrossGambling["stats"] = { }; end
@@ -242,7 +251,12 @@ function CrossGambling_OnEvent(self, event, ...)
 		CrossGambling_CHAT_Button:SetText(chatmethod);
 
 
-
+		if CrossGambling["minimap"] then
+			-- show minimap
+			CG_MinimapButton:Show()
+		else
+			CG_MinimapButton:Hide()
+		end
 
 
 		if(CrossGambling["whispers"] == false) then
@@ -288,6 +302,17 @@ function CrossGambling_ResetStats()
 	CrossGambling["stats"] = { };
 end
 
+function Minimap_Toggle()
+	if CrossGambling["minimap"] then
+		-- minimap is shown, set to false, and hide
+		CrossGambling["minimap"] = false
+		CG_MinimapButton:Hide()
+	else
+		-- minimap is now shown, set to true, and show
+		CrossGambling["minimap"] = true
+		CG_MinimapButton:Show()
+	end
+end
 
 function CrossGambling_OnClickCHAT()
 	if(CrossGambling["chat"] == nil) then CrossGambling["chat"] = 1; end
