@@ -29,7 +29,7 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString name="version" inherits="GameFontNormal" text="|cffff3f3f(v8.0.1-7)">
+				<FontString name="version" inherits="GameFontNormal" text="|cffff3f3f(v8.0.1-8)">
 					<Size x="299" y="18" />
 					<Anchors>
 						<Anchor point="TOPLEFT">
