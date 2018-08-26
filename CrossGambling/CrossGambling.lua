@@ -1,5 +1,6 @@
 local AcceptOnes = "false";
 local AcceptRolls = "false";
+local AcceptLoserAmount = "false";
 local totalrolls = 0
 local tierolls = 0;
 local theMax
@@ -100,6 +101,7 @@ function CrossGambling_SlashCmd(msg)
 		Print("", "", "ban - Ban's the user from being able to roll");
 		Print("", "", "unban - Unban's the user");
 		Print("", "", "listban - Shows ban list");
+		Print("", "", "loser - Toggles ability for loser to set next amount.")
 		msgPrint = 1;
 	end
 	if (msg == "hide") then
@@ -158,6 +160,11 @@ function CrossGambling_SlashCmd(msg)
 		msgPrint = 1;
 	end
 
+	if (string.sub(msg, 1, 5) == "loser") then
+		CrossGambling_ToggleLoser();
+		msgPrint = 1;
+	end
+
 	if (msgPrint == 0) then
 		Print("", "", "|cffffff00Invalid argument for command /cg");
 	end
@@ -168,30 +175,45 @@ SLASH_CrossGambling2 = "/cg";
 SlashCmdList["CrossGambling"] = CrossGambling_SlashCmd
 
 function CrossGambling_ParseChatMsg(arg1, arg2)
-	if (arg1 == "1") then
-		if(CrossGambling_ChkBan(tostring(arg2)) == 0) then
-			CrossGambling_Add(tostring(arg2));
-			if (not CrossGambling_LASTCALL_Button:IsEnabled() and totalrolls == 1) then
-				CrossGambling_LASTCALL_Button:Enable();
+	if(AcceptOnes=="true") then
+		if (arg1 == "1") then
+			if(CrossGambling_ChkBan(tostring(arg2)) == 0) then
+				CrossGambling_Add(tostring(arg2));
+				if (not CrossGambling_LASTCALL_Button:IsEnabled() and totalrolls == 1) then
+					CrossGambling_LASTCALL_Button:Enable();
+				end
+				if totalrolls == 2 then
+					CrossGambling_AcceptOnes_Button:Disable();
+					CrossGambling_AcceptOnes_Button:SetText("Open Entry");
+				end
+			else
+				ChatMsg("Sorry, but you're banned from the game!");
 			end
-			if totalrolls == 2 then
-				CrossGambling_AcceptOnes_Button:Disable();
+
+		elseif(arg1 == "-1") then
+			CrossGambling_Remove(tostring(arg2));
+			if (CrossGambling_LASTCALL_Button:IsEnabled() and totalrolls == 0) then
+				CrossGambling_LASTCALL_Button:Disable();
+			end
+			if totalrolls == 1 then
+				CrossGambling_AcceptOnes_Button:Enable();
 				CrossGambling_AcceptOnes_Button:SetText("Open Entry");
 			end
-		else
-			ChatMsg("Sorry, but you're banned from the game!");
 		end
 
-	elseif(arg1 == "-1") then
-		CrossGambling_Remove(tostring(arg2));
-		if (CrossGambling_LASTCALL_Button:IsEnabled() and totalrolls == 0) then
-			CrossGambling_LASTCALL_Button:Disable();
+		elseif(AcceptLoserAmount ~= "false") then --AcceptLoserAmount is set to player that just lost
+		charname, realmname = strsplit("-", tostring(arg2));
+			if (charname:gsub("^%l", string.upper) == AcceptLoserAmount) then
+			key, amount = strsplit(" ", arg1);
+				if (key == "!amount" and tonumber(amount)) then
+				CrossGambling_EditBox:SetText(tonumber(amount));
+				CrossGambling["lastroll"] = tonumber(amount);
+				local NextAmount = strjoin("", AcceptLoserAmount, " ", "set next gamble amount to ", amount, "!")
+				ChatMsg(NextAmount);
+				AcceptLoserAmount = "false";
+				end
+			end
 		end
-		if totalrolls == 1 then
-			CrossGambling_AcceptOnes_Button:Enable();
-			CrossGambling_AcceptOnes_Button:SetText("Open Entry");
-		end
-	end
 end
 
 local function OptionsFormatter(text, prefix)
@@ -216,7 +238,7 @@ end
 function CrossGambling_OnEvent(self, event, ...)
 
 	-- LOADS ALL DATA FOR INITIALIZATION OF ADDON --
-	if (event == "PLAYER_ENTERING_WORLD") then
+		if (event == "PLAYER_ENTERING_WORLD") then
 		CrossGambling_EditBox:SetJustifyH("CENTER");
 
 		if(not CrossGambling) then
@@ -244,6 +266,7 @@ function CrossGambling_OnEvent(self, event, ...)
 		if(not CrossGambling["channel"]) then CrossGambling["channel"] = "gambling"; end
 		if(not CrossGambling["whispers"]) then CrossGambling["whispers"] = false; end
 		if(not CrossGambling["bans"]) then CrossGambling["bans"] = { }; end
+		if(not CrossGambling["loser"]) then CrossGambling["loser"] = 1; end
 
 		CrossGambling_EditBox:SetText(""..CrossGambling["lastroll"]);
 
@@ -274,24 +297,24 @@ function CrossGambling_OnEvent(self, event, ...)
 	end
 
 	-- IF IT'S A RAID MESSAGE... --
-	if ((event == "CHAT_MSG_RAID_LEADER" or event == "CHAT_MSG_RAID") and AcceptOnes=="true" and CrossGambling["chat"] == 1) then
+	if ((event == "CHAT_MSG_RAID_LEADER" or event == "CHAT_MSG_RAID") and AcceptOnes=="true" or AcceptLoserAmount~="false" and CrossGambling["chat"] == 1) then
 		local msg, _,_,_,name = ... -- name no realm
 		CrossGambling_ParseChatMsg(msg, name)
 	end
 
-	if ((event == "CHAT_MSG_GUILD_LEADER" or event == "CHAT_MSG_GUILD")and AcceptOnes=="true" and CrossGambling["chat"] == 2) then
+	if ((event == "CHAT_MSG_GUILD_LEADER" or event == "CHAT_MSG_GUILD")and AcceptOnes=="true" or AcceptLoserAmount~="false" and CrossGambling["chat"] == 2) then
 		local msg, name = ... -- name no realm
 		CrossGambling_ParseChatMsg(msg, name)
 	end
 
-	if event == "CHAT_MSG_CHANNEL" and AcceptOnes=="true" and CrossGambling["chat"] == 3 then
+	if event == "CHAT_MSG_CHANNEL" and AcceptOnes=="true" or AcceptLoserAmount~="false" and CrossGambling["chat"] == 3 then
 		local msg,_,_,_,name,_,_,_,channelName = ...
 		if channelName == CrossGambling["channel"] then
 			CrossGambling_ParseChatMsg(msg, name)
 		end
 	end
 
-	if (event == "CHAT_MSG_SYSTEM" and AcceptRolls=="true") then
+	if (event == "CHAT_MSG_SYSTEM" and AcceptRolls=="true" or AcceptLoserAmount~="false") then
 		local msg = ...
 		CrossGambling_ParseRoll(tostring(msg));
 	end
@@ -478,24 +501,25 @@ function CrossGambling_OnClickLASTCALL()
 end
 
 function CrossGambling_OnClickACCEPTONES()
-	if CrossGambling_EditBox:GetText() ~= "" and CrossGambling_EditBox:GetText() ~= "1" then
-		CrossGambling_Reset();
-		CrossGambling_ROLL_Button:Disable();
-		CrossGambling_LASTCALL_Button:Disable();
-		AcceptOnes = "true";
-		local fakeroll = "";
-		ChatMsg(format("%s%s%s%s", ".:Welcome to CrossGambling:. User's Roll - (", CrossGambling_EditBox:GetText(), ") - Type 1 to Join  (-1 to withdraw)", fakeroll));
-        CrossGambling["lastroll"] = CrossGambling_EditBox:GetText();
-		theMax = tonumber(CrossGambling_EditBox:GetText());
-		low = theMax+1;
-		tielow = theMax+1;
-		CrossGambling_EditBox:ClearFocus();
-		CrossGambling_AcceptOnes_Button:SetText("New Game");
-		CrossGambling_LASTCALL_Button:Disable();
-		CrossGambling_EditBox:ClearFocus();
-	else
-		message("Please enter a number to roll from.", chatmethod);
-	end
+		if CrossGambling_EditBox:GetText() ~= "" and CrossGambling_EditBox:GetText() ~= "1" then
+			CrossGambling_Reset();
+			CrossGambling_ROLL_Button:Disable();
+			CrossGambling_LASTCALL_Button:Disable();
+			AcceptOnes = "true";
+			AcceptLoserAmount = "false";
+			local fakeroll = "";
+			ChatMsg(format("%s%s%s%s", ".:Welcome to CrossGambling:. User's Roll - (", CrossGambling_EditBox:GetText(), ") - Type 1 to Join  (-1 to withdraw)", fakeroll));
+			CrossGambling["lastroll"] = CrossGambling_EditBox:GetText();
+			theMax = tonumber(CrossGambling_EditBox:GetText());
+			low = theMax+1;
+			tielow = theMax+1;
+			CrossGambling_EditBox:ClearFocus();
+			CrossGambling_AcceptOnes_Button:SetText("New Game");
+			CrossGambling_LASTCALL_Button:Disable();
+			CrossGambling_EditBox:ClearFocus();
+		else
+			message("Please enter a number to roll from.", chatmethod);
+		end
 end
 
 function CrossGambling_OnClickRoll()
@@ -540,12 +564,19 @@ function CrossGambling_Report()
 	if (goldowed ~= 0) then
 		lowname = lowname:gsub("^%l", string.upper)
 		highname = highname:gsub("^%l", string.upper)
-		local string3 = strjoin(" ", "", lowname, "owes", highname, goldowed,"gold.")
+		local string3 = strjoin(" ", "",  lowname, "owes", highname, BreakUpLargeNumbers(goldowed),"gold.")
 
 		CrossGambling["stats"][highname] = (CrossGambling["stats"][highname] or 0) + goldowed;
 		CrossGambling["stats"][lowname] = (CrossGambling["stats"][lowname] or 0) - goldowed;
 
 		ChatMsg(string3);
+		
+		if (CrossGambling["loser"] == 1) then
+			local LoserTxTMsg = strjoin("", lowname, " ", "can now set the next gambling amount by saying !amount x")
+			ChatMsg(LoserTxTMsg);
+			AcceptLoserAmount = lowname
+		end
+		
 	else
 		ChatMsg("It was a tie! No payouts on this roll!");
 	end
@@ -719,6 +750,16 @@ function CrossGambling_ListBan()
 	end
 	if (bancnt == 0) then
 		DEFAULT_CHAT_FRAME:AddMessage("|cffffff00To ban do /cg ban (Name) or to unban /cg unban (Name).");
+	end
+end
+
+function CrossGambling_ToggleLoser()
+	if (CrossGambling["loser"] == 1) then
+		CrossGambling["loser"] = 0
+		Print("", "", "|cffffff00Loser is no longer able to set next gamble amount.");
+	else
+		CrossGambling["loser"] = 1
+		Print("", "", "|cffffff00Loser can now set next gamble amount.");		
 	end
 end
 
