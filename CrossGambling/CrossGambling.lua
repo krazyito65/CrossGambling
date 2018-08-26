@@ -215,7 +215,11 @@ function CrossGambling_ParseChatMsg(arg1, arg2)
 				if (key == "!amount" and tonumber(amount)) then
 				CrossGambling_EditBox:SetText(tonumber(amount));
 				CrossGambling["lastroll"] = tonumber(amount);
-				local NextAmount = strjoin("", AcceptLoserAmount, " ", "set next gamble amount to ", amount, "!")
+				if tonumber(amount) > 1000000 then
+					NextAmount = strjoin("", AcceptLoserAmount, " ", "set next gamble amount to 1.000.000!"," ","(Sorry 1.000.000 are roll cap)")
+				else
+					NextAmount = strjoin("", AcceptLoserAmount, " ", "set next gamble amount to ", BreakUpLargeNumbers(amount), "!")
+				end
 				ChatMsg(NextAmount);
 				AcceptLoserAmount = "false";
 				end
@@ -526,7 +530,7 @@ function CrossGambling_OnClickACCEPTONES()
 			AcceptOnes = "true";
 			AcceptLoserAmount = "false";
 			local fakeroll = "";
-			ChatMsg(format("%s%s%s%s", ".:Welcome to CrossGambling:. User's Roll - (", CrossGambling_EditBox:GetText(), ") - Type 1 to Join  (-1 to withdraw)", fakeroll));
+			ChatMsg(format("%s%s%s%s", ".:Welcome to CrossGambling:. User's Roll - (", BreakUpLargeNumbers(CrossGambling_EditBox:GetText()), ") - Type 1 to Join  (-1 to withdraw)", fakeroll));
 			CrossGambling["lastroll"] = CrossGambling_EditBox:GetText();
 			theMax = tonumber(CrossGambling_EditBox:GetText());
 			low = theMax+1;
