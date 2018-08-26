@@ -297,24 +297,24 @@ function CrossGambling_OnEvent(self, event, ...)
 	end
 
 	-- IF IT'S A RAID MESSAGE... --
-	if ((event == "CHAT_MSG_RAID_LEADER" or event == "CHAT_MSG_RAID") and AcceptOnes=="true" or AcceptLoserAmount~="false"  and CrossGambling["chat"] == 1) then
+	if ((event == "CHAT_MSG_RAID_LEADER" or event == "CHAT_MSG_RAID") and AcceptOnes=="true" or AcceptLoserAmount~="false" and CrossGambling["chat"] == 1) then
 		local msg, _,_,_,name = ... -- name no realm
 		CrossGambling_ParseChatMsg(msg, name)
 	end
 
-	if ((event == "CHAT_MSG_GUILD_LEADER" or event == "CHAT_MSG_GUILD")and AcceptOnes=="true" and CrossGambling["chat"] == 2) then
+	if ((event == "CHAT_MSG_GUILD_LEADER" or event == "CHAT_MSG_GUILD")and AcceptOnes=="true" or AcceptLoserAmount~="false" and CrossGambling["chat"] == 2) then
 		local msg, name = ... -- name no realm
 		CrossGambling_ParseChatMsg(msg, name)
 	end
 
-	if event == "CHAT_MSG_CHANNEL" and AcceptOnes=="true" and CrossGambling["chat"] == 3 then
+	if event == "CHAT_MSG_CHANNEL" and AcceptOnes=="true" or AcceptLoserAmount~="false" and CrossGambling["chat"] == 3 then
 		local msg,_,_,_,name,_,_,_,channelName = ...
 		if channelName == CrossGambling["channel"] then
 			CrossGambling_ParseChatMsg(msg, name)
 		end
 	end
 
-	if (event == "CHAT_MSG_SYSTEM" and AcceptRolls=="true") then
+	if (event == "CHAT_MSG_SYSTEM" and AcceptRolls=="true" or AcceptLoserAmount~="false") then
 		local msg = ...
 		CrossGambling_ParseRoll(tostring(msg));
 	end
