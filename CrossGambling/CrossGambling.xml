@@ -91,7 +91,7 @@
 				<OnLoad>CrossGambling_STATS_Button.tooltipText="Show's all user stats."</OnLoad>
 				</Scripts>
 			</Button>
-			<EditBox name="CrossGambling_EditBox" letters="7">
+			<EditBox name="CrossGambling_EditBox" letters="6">
 				<Size>
 					<AbsDimension x="100" y="30" />
 				</Size>
