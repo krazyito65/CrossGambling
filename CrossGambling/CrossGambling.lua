@@ -25,7 +25,8 @@ local virag_debug = false
 local chatmethods = {
 	"RAID",
 	"GUILD",
-	"CHANNEL"
+	"CHANNEL",
+	"PARTY"
 }
 local chatmethod = chatmethods[1];
 
@@ -37,6 +38,8 @@ function CrossGambling_OnLoad(self)
 	self:RegisterEvent("CHAT_MSG_RAID");
 	self:RegisterEvent("CHAT_MSG_CHANNEL");
 	self:RegisterEvent("CHAT_MSG_RAID_LEADER");
+	self:RegisterEvent("CHAT_MSG_PARTY");
+	self:RegisterEvent("CHAT_MSG_PARTY_LEADER");
 	self:RegisterEvent("CHAT_MSG_GUILD");
 	self:RegisterEvent("CHAT_MSG_SYSTEM");
 	self:RegisterEvent("PLAYER_ENTERING_WORLD");
@@ -311,6 +314,11 @@ function CrossGambling_OnEvent(self, event, ...)
 
 	-- IF IT'S A RAID MESSAGE... --
 	if ((event == "CHAT_MSG_RAID_LEADER" or event == "CHAT_MSG_RAID") and AcceptOnes=="true" or AcceptLoserAmount~="false" and CrossGambling["chat"] == 1) then
+		local msg, _,_,_,name = ... -- name no realm
+		CrossGambling_ParseChatMsg(msg, name)
+	end
+
+	if ((event == "CHAT_MSG_PARTY_LEADER" or event == "CHAT_MSG_PARTY") and AcceptOnes=="true" or AcceptLoserAmount~="false" and CrossGambling["chat"] == 4) then
 		local msg, _,_,_,name = ... -- name no realm
 		CrossGambling_ParseChatMsg(msg, name)
 	end
