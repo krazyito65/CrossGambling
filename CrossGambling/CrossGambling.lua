@@ -1,3 +1,5 @@
+local _, CrossGambling = ...
+local L = CrossGambling.L;
 local AcceptOnes = "false";
 local AcceptRolls = "false";
 local AcceptLoserAmount = "false";
@@ -665,9 +667,13 @@ end
 function CrossGambling_ParseRoll(temp2)
 	local temp1 = strlower(temp2);
 
-	local player, junk, roll, range = strsplit(" ", temp1);
+    local rollSplitTbl = {strsplit(" ", temp1)};
+    local player = rollSplitTbl[L["RollSplitStringIndexesPlayer"]];
+    local junk = rollSplitTbl[L["RollSplitStringIndexesJunk"]];
+    local roll = rollSplitTbl[L["RollSplitStringIndexesRoll"]];
+    local range = rollSplitTbl[L["RollSplitStringIndexesRange"]];
 
-	if junk == "rolls" and CrossGambling_Check(player)==1 then
+	if junk == L["RollSplitJunkString"] and CrossGambling_Check(player)==1 then
 		minRoll, maxRoll = strsplit("-",range);
 		minRoll = tonumber(strsub(minRoll,2));
 		maxRoll = tonumber(strsub(maxRoll,1,-2));
