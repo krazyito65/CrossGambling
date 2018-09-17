@@ -323,7 +323,7 @@ function CrossGambling_OnEvent(self, event, ...)
 		CrossGambling_ParseChatMsg(msg, name)
 	end
 
-	if ((event == "CHAT_MSG_GUILD_LEADER" or event == "CHAT_MSG_GUILD")and AcceptOnes or AcceptLoserAmountand CrossGambling["chat"] == 2) then
+	if ((event == "CHAT_MSG_GUILD_LEADER" or event == "CHAT_MSG_GUILD")and AcceptOnes or AcceptLoserAmount and CrossGambling["chat"] == 2) then
 		local msg, name = ... -- name no realm
 		CrossGambling_ParseChatMsg(msg, name)
 	end
@@ -930,6 +930,7 @@ function CrossGambling_Reset()
 		CrossGambling["hightie"] = { };
 		AcceptOnes = false
 		AcceptRolls = "false"
+		AcceptLoserAmount = false
 		totalrolls = 0
 		theMax = 0
 		tierolls = 0;
