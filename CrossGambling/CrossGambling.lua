@@ -814,7 +814,7 @@ function CrossGambling_ToggleLoser()
 		CrossGambling["loser"] = false
 		Print("", "", "|cffffff00Loser is no longer able to set next gamble amount.");
 	else
-		CrossGambling["loser"] = false
+		CrossGambling["loser"] = true
 		Print("", "", "|cffffff00Loser can now set next gamble amount.");
 	end
 end
