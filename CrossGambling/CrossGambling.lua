@@ -460,13 +460,13 @@ function CrossGambling_OnClickSTATS(full)
 		end
 
 		if (CrossGambling["house"] > 0) then
-			ChatMsg(string.format("The house has taken %s total.", BreakUpLargeNumbers(CrossGambling["house"])), chatmethod);
+			ChatMsg(string.format(L["The house has taken %s total."], BreakUpLargeNumbers(CrossGambling["house"])), chatmethod);
 		end
 		return
 	end
 
 	if (CrossGambling["house"] > 0) then
-		ChatMsg(string.format("The house has taken %s total.", BreakUpLargeNumbers(CrossGambling["house"])), chatmethod);
+		ChatMsg(string.format(L["The house has taken %s total."], BreakUpLargeNumbers(CrossGambling["house"])), chatmethod);
 	end
 	
 	local x1 = 3-1;
@@ -503,16 +503,18 @@ function CrossGambling_OnClickROLL()
 		AcceptOnes = "false";
 		AcceptRolls = "true";
 		if (tie == 0) then
-			ChatMsg("Roll now!");
+			ChatMsg(L["Roll mow!"]);
 		end
 
 		if (lowbreak == 1) then
-			ChatMsg(format("%s%d%s", "Low end tiebreaker! Roll 1-", theMax, " now!"));
+			--ChatMsg(format("%s%d%s", "Low end tiebreaker! Roll 1-", theMax, " now!"));
+			ChatMsg(string.format(L["Low end tiebreaker! Roll 1- %s now!"], theMax));
 			CrossGambling_List();
 		end
 
 		if (highbreak == 1) then
-			ChatMsg(format("%s%d%s", "High end tiebreaker! Roll 1-", theMax, " now!"));
+			--ChatMsg(format("%s%d%s", "High end tiebreaker! Roll 1-", theMax, " now!"));
+			ChatMsg(string.format(L["High end tiebreaker! Roll 1- %s now!"], theMax));
 			CrossGambling_List();
 		end
 
@@ -521,12 +523,12 @@ function CrossGambling_OnClickROLL()
 	end
 
 	if (AcceptOnes == "true" and totalrolls <2) then
-		ChatMsg("Not enough Players!");
+		ChatMsg(L["Not enough Players!"]);
 	end
 end
 
 function CrossGambling_OnClickLASTCALL()
-	ChatMsg("Last Call to join!");
+	ChatMsg(L["Last Call to join!"]);
 	CrossGambling_EditBox:ClearFocus();
 	CrossGambling_LASTCALL_Button:Disable();
 	CrossGambling_ROLL_Button:Enable();
@@ -540,7 +542,7 @@ function CrossGambling_OnClickACCEPTONES()
 			AcceptOnes = "true";
 			AcceptLoserAmount = "false";
 			local fakeroll = "";
-			ChatMsg(format("%s%s%s%s", ".:Welcome to CrossGambling:. User's Roll - (", BreakUpLargeNumbers(CrossGambling_EditBox:GetText()), ") - Type 1 to Join  (-1 to withdraw)", fakeroll));
+			ChatMsg(string.format(L[".:Welcome to CrossGambling:. User's Roll - (%s) - Type 1 to Join (-1 to withdraw)"], BreakUpLargeNumbers(CrossGambling_EditBox:GetText(), fakeroll)));
 			CrossGambling["lastroll"] = CrossGambling_EditBox:GetText();
 			theMax = tonumber(CrossGambling_EditBox:GetText());
 			low = theMax+1;
@@ -602,10 +604,10 @@ function CrossGambling_Report()
 	if (goldowed ~= 0) then
 		lowname = lowname:gsub("^%l", string.upper)
 		highname = highname:gsub("^%l", string.upper)
-		local string3 = strjoin(" ", "",  lowname, "owes", highname, BreakUpLargeNumbers(goldowed),"gold.")
+		local string3 = string.format(L["%s owes %s %s gold!"], lowname, highname, BreakUpLargeNumbers(goldowed));
 
 		if (CrossGambling["isHouseCut"] == 1 and houseCut > 1) then
-			string3 = strjoin(" ", "", lowname, "owes", highname, BreakUpLargeNumbers(goldowed),"gold and",  BreakUpLargeNumbers(houseCut),"gold to the guildbank.")
+			string3 = string.format(L["%s owes %s %s gold and %s gold the guild bank!"], lowname, highname, BreakUpLargeNumbers(goldowed), BreakUpLargeNumbers(houseCut));
 		end
 
 		CrossGambling["stats"][highname] = (CrossGambling["stats"][highname] or 0) + goldowed;
@@ -614,13 +616,12 @@ function CrossGambling_Report()
 		ChatMsg(string3);
 		
 		if (CrossGambling["loser"] == 1) then
-			local LoserTxTMsg = strjoin("", lowname, " ", "can now set the next gambling amount by saying !amount x")
-			ChatMsg(LoserTxTMsg);
+			ChatMsg(string.format(L["%s can now set the next gambling amount by saying !amount x"], lowname));
 			AcceptLoserAmount = lowname
 		end
 		
 	else
-		ChatMsg("It was a tie! No payouts on this roll!");
+		ChatMsg(L["It was a tie! No payouts on this roll!"]);
 	end
 	CrossGambling_Reset();
 	CrossGambling_AcceptOnes_Button:SetText("Open Entry");
@@ -782,8 +783,7 @@ end
 
 function CrossGambling_List()
 	for i=1, table.getn(CrossGambling.strings) do
-	  	local string3 = strjoin(" ", "", tostring(CrossGambling.strings[i]):gsub("^%l", string.upper),"still needs to roll.")
-		ChatMsg(string3);
+	  	ChatMsg(string.format(L["%s still needs to roll."], tostring(CrossGambling.strings[i]):gsub("^%l", string.upper)));
 	end
 end
 
