@@ -930,7 +930,6 @@ function CrossGambling_Reset()
 		CrossGambling["hightie"] = { };
 		AcceptOnes = false
 		AcceptRolls = "false"
-		AcceptLoserAmount = false
 		totalrolls = 0
 		theMax = 0
 		tierolls = 0;
