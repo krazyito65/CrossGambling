@@ -16,7 +16,7 @@ do
         CrossGambling.L[".:Welcome to CrossGambling:. User's Roll - (%s) - Type 1 to Join (-1 to withdraw)"] = ".:Welcome to CrossGambling:. User's Roll - (%s) - Type 1 to Join (-1 to withdraw)"
         CrossGambling.L["Last Call to join!"] = "Last Call to join!";
         CrossGambling.L["%s still needs to roll."] = "%s still needs to roll.";
-        CrossGambling.L["Roll mow!"] = "Roll mow!";
+        CrossGambling.L["Roll now!"] = "Roll now!";
         CrossGambling.L["Not enough Players!"] = "Not enough Players!";
         CrossGambling.L["High end tiebreaker! Roll 1- %s now!"] = "High end tiebreaker! Roll 1- %s now!";
         CrossGambling.L["Low end tiebreaker! Roll 1- %s now!"] = "Low end tiebreaker! Roll 1- %s now!";
@@ -37,7 +37,7 @@ do
         CrossGambling.L[".:Welcome to CrossGambling:. User's Roll - (%s) - Type 1 to Join (-1 to withdraw)"] = ".:Willkommen bei CrossGambling:. Nutzer würfeln - (%s) - Tippe 1 zum Teilnehmen (-1 um nicht mehr Teilzunehmen.)"
         CrossGambling.L["Last Call to join!"] = "Letzte Chance, um teilzunehmen!";
         CrossGambling.L["%s still needs to roll."] = "%s muss noch würfeln.";
-        CrossGambling.L["Roll mow!"] = "Jetzt würfeln!";
+        CrossGambling.L["Roll now!"] = "Jetzt würfeln!";
         CrossGambling.L["Not enough Players!"] = "Nicht genug Teilnehmer!";
         CrossGambling.L["High end tiebreaker! Roll 1- %s now!"] = "High end tiebreaker! Roll 1- %s now!";
         CrossGambling.L["Low end tiebreaker! Roll 1- %s now!"] = "Low end tiebreaker! Roll 1- %s now!";

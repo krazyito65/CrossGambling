@@ -503,7 +503,7 @@ function CrossGambling_OnClickROLL()
 		AcceptOnes = false;
 		AcceptRolls = "true";
 		if (tie == 0) then
-			ChatMsg(L["Roll mow!"]);
+			ChatMsg(L["Roll now!"]);
 		end
 
 		if (lowbreak == 1) then
