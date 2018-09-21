@@ -9,3 +9,8 @@
 ## URL: https://github.com/krazyito65/CrossGambling/
 ## SavedVariables: CrossGambling
 CrossGambling.xml
+
+# Locale file
+Locale\Locale.lua
+
+CrossGambling.lua
